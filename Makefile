@@ -8,7 +8,8 @@ SRCS	=	main.c \
 
 HEADER	=	./includes
 NAME	=	sudoku
-COMPIL	=	gcc
+NAME_D	=	$(addsuffix _debug,$(NAME))
+CC		=	gcc
 CFLAGS	=	-Wall -Wextra -Werror
 OBJS	=	$(SRCS:.c=.o)
 
@@ -16,16 +17,26 @@ OBJS	=	$(SRCS:.c=.o)
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	$(COMPIL) $(OBJS) -o $(NAME)
+	@$(CC) $(OBJS) -o $(NAME)
+	@echo "-----compilation of binary '$(NAME)'-----"
 
 %.o:%.c
-		gcc $(CFLAGS) -I$(HEADER) -c $^ -o $@
+		@$(CC) $(CFLAGS) -I$(HEADER) -c $^ -o $@
+		@echo "-----compilation of '$^' in '$@'----"
 clean:
-	rm -f $(OBJS)
+	@rm -f $(OBJS)
+	@echo "-----delation of all objects files-----"
+	@rm -f $(NAME_D)
+	@echo "-----deletion of binary '$(NAME_D)'-----"
 
 fclean: clean
-	rm -f $(NAME)
+	@rm -f $(NAME)
+	@echo "-----deletion of binary '$(NAME)'-----"
 
 re: clean all
 
-.PHONY: all clean fclean re
+debug:
+	@$(CC) $(CFLAGS) -g -O0 -I$(HEADER) $(SRCS) -o $(NAME_D)
+	@echo "-----compilation of binary '$(NAME_D)' for debug-----"
+
+.PHONY: all clean fclean re debug
