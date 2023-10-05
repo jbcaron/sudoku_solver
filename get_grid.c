@@ -40,6 +40,7 @@ int	get_grid(char grid[][9], int fd)
 	n_line = 0;
 	while (n_line < 9)
 	{
+		write(1, "> ", 2);
 		if (get_line(buf, fd) == -1)
 		{
 			write (1, "Error : wrong input format\n", 27);
